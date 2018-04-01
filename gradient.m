@@ -8,7 +8,7 @@ G_w = w*h; % G Width
 G_h = h*(w-1)+(h-1)*w; % G height
 ind_i = repmat([1:G_h],2,1);
 ind_i= ind_i(:);
-val = [repmat([-1 1], 1, h*(w-1)) repmat([1 -1], 1, (h-1)*w)]';
+val = 0.5*[repmat([-1 1], 1, h*(w-1)) repmat([1 -1], 1, (h-1)*w)]';
 ind_j = [];
 
 % Compute the first part of g vector

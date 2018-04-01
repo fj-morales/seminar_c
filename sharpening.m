@@ -13,5 +13,4 @@ U =(G'*G +cu*I)\(cs*G'*g + cu*Ubar);
 
 %%
 out_image =uint8(reshape(U,h,w,d)*255);
-
-imwrite(image,output_img_filename);
+imwrite(out_image,output_img_filename);
