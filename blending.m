@@ -1,6 +1,6 @@
 clear all; clc;
-im_source=imread('k.jpg');
-im_target = imread('blended.png');
+im_source=imread('osito.jpg');
+im_target = imread('target.jpg');
 [h w d]=size(im_source);
 U = double(reshape(im_source,w*h,d))/255;
 
