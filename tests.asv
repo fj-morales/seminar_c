@@ -29,27 +29,10 @@ g0 = 0.5*[-1 2 -1 3 -2 1 2 -4 3 1 -2 -3 -1 1 1 -1 -1]';
 g1 = 0.5*[1 0 -1 4 -4 2 -1 -1 3 1 -2 -2 3 2 0 -1 -1]';
 gManual = [g0 g1 g0];
 
-%Test that gradient vector computed manually is the same as the one yielded
+%test that gradient vector computed manually is the same as the one yielded
 %by using the code
 testCase = matlab.unittest.TestCase.forInteractiveUse;
 assertEqual(testCase,gCode,gManual);
 
-%Test that for cs=1, the output image is the same as the output:
-%Original image in vector representation
-image=imread('blurryImage.png');
-[h w d]=size(image);
-Ubar = double(reshape(image,w*h,d))/255;
-%output image
-out_image = sharpening('blurryImage.png','noscal.png',1,0.5);
-Unoscal = double(reshape(out_image,w*h,d))/255;
-
-%Check that output image is equal to the input image
-assertEqual(testCase,Unoscal,Ubar,'AbsTol',0.01)
-
-%Test that for cs=1000, the output image is the same as the output:
-%output image
-out_image = sharpening('blurryImage.png','onlyscal.png',2,0.000000000000000001);
-Unonlyscal = double(reshape(out_image,w*h,d))/255;
-
-%Check that output image is equal to the input image
-assertEqual(testCase,Unoscal,100*Ubar,'AbsTol',0.01)
+%test that for cs=1, the output image is the same as the output.
+Unoscal = sharpening('blurryImage.png','noscal.png',1,0.
