@@ -45,11 +45,3 @@ Unoscal = double(reshape(out_image,w*h,d))/255;
 
 %Check that output image is equal to the input image
 assertEqual(testCase,Unoscal,Ubar,'AbsTol',0.01)
-
-%Test that for cs=1000, the output image is the same as the output:
-%output image
-out_image = sharpening('blurryImage.png','onlyscal.png',2,0.000000000000000001);
-Unonlyscal = double(reshape(out_image,w*h,d))/255;
-
-%Check that output image is equal to the input image
-assertEqual(testCase,Unoscal,100*Ubar,'AbsTol',0.01)
