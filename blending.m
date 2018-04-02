@@ -1,5 +1,6 @@
-im_source=imread('shark1.jpg');
-im_target = imread('target.jpg');
+clear all; clc;
+im_source=imread('k.jpg');
+im_target = imread('blended.png');
 [h w d]=size(im_source);
 U = double(reshape(im_source,w*h,d))/255;
 
@@ -29,7 +30,8 @@ St = sparse(Ub_idx(1:length(Ub_idx)),[1:length(Ub_idx)],ones(length(Ub_idx),1),h
 close;
 %% Write your gradient method here
 tic
-G = freehand_gradient(sel_area);
+g_zeros = [];
+[G,g_zeros ]= freehand_gradient(sel_area);
 % G = gradient(h_s,w_s);
 toc
 
@@ -46,8 +48,8 @@ Uinner = double([im_source(pad_idx') inner2(pad_idx') inner3(pad_idx')])/255; % 
 
 [size(Uinner,1) size(G,2) ]
 g = G * Uinner;
-% g_in = g_inner(g,h_s,w_s);
-g_in = g_holy(g, b_idx_shift, inner_idx_shift, h_s, w_s);
+
+g(find(g_zeros == 1)) = 0;
 
 %%
 
@@ -82,7 +84,7 @@ for jj = 1:h_s
     new_target3(position(1)+jj-1,position(2)-1+rowElem(:,2))= image_out(jj,rowElem(:,2),3);
     
 end
-
+%%
 new_target(:,:,1) = new_target1;
 new_target(:,:,2) = new_target2;
 new_target(:,:,3) = new_target3;
@@ -99,4 +101,4 @@ new_target(:,:,3) = new_target3;
 % new_target(row1:row2, col1:col2,3) = image_out(:,:,3);
 
 figure, imshow(new_target)
-imwrite(image_out,'blended.png')
+imwrite(new_target,'blended.png')
