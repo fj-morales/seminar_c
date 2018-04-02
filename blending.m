@@ -1,6 +1,6 @@
 clear all; clc;
-im_source=imread('osito.jpg');
-im_target = imread('target.jpg');
+im_source=imread('whale.JPG');
+im_target = imread('back.jpg');
 [h w d]=size(im_source);
 U = double(reshape(im_source,w*h,d))/255;
 
