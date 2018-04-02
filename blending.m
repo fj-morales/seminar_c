@@ -7,14 +7,16 @@ U = double(reshape(im_source,w*h,d))/255;
 %%
 im_source =uint8(reshape(U,h,w,d)*255);
 figure, imshow(im_source)
-% h_im = imfreehand;
-h_im = imrect;
+h_im = imfreehand;
+%h_im = imrect;
 
 sel_area = round(h_im.createMask); % selected area
 b_idx = cell2mat(bwboundaries(sel_area));
 b_idx = b_idx(1:length(b_idx)-1,:);
 UL = [min(b_idx(:,1)) min(b_idx(:,2))]; % Upper Left corner 
 BR = [max(b_idx(:,1)) max(b_idx(:,2))]; % Bottom Right corner 
+BL = [max(b_idx(:,1)) min(b_idx(:,2))]; % Bottom Left corner 
+UR = [min(b_idx(:,1)) max(b_idx(:,2))]; % Upper Right corner 
 h_s=(BR(1)-UL(1)+1);
 w_s=(BR(2)-UL(2)+1);
 b_idx_shift = b_idx - [min(b_idx(:,1))-1 min(b_idx(:,2))-1];
@@ -29,17 +31,20 @@ G = gradient(h_s,w_s);
 c = find (sel_area == 1);
 [aa, bb, dd] = ind2sub(size(sel_area),c);
 inner_idx = sub2ind([h w], aa, bb);
-
+inner_idx_shift  = [aa bb] -[min(aa)-1 min(bb-1)];
+pad_idx = sub2ind([h w], repmat(UL(1):BL(1),1,w_s), repelem(UL(2):UR(2),h_s));
 inner2 = im_source(:,:,2);
 inner3 = im_source(:,:,3);
-Uinner = double([im_source(inner_idx) inner2(inner_idx) inner3(inner_idx)])/255;
+%Uinner = double([im_source(inner_idx) inner2(inner_idx) inner3(inner_idx)])/255;
+Uinner = double([im_source(pad_idx') inner2(pad_idx') inner3(pad_idx')])/255;
 
 g = G * Uinner;
-g_in = g_inner(g,h_s,w_s);
+%g_in = g_inner(g,h_s,w_s);
+g_in = g_holy(g, b_idx_shift, inner_idx_shift, h_s, w_s);
 
 %%
 
-figure, imshow(im_target)
+figure, imshow(im_target)       
 h_im = impoint;
 % waitforbuttonpress
 position = round(h_im.getPosition);
