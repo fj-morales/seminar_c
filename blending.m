@@ -71,15 +71,32 @@ U_out = (G'*G+a*St*St')\(G'*g +a*St*Ub);
 %%
 image_out =uint8(reshape(U_out,h_s,w_s,d)*255);
 
-new_target = im_target;
-[smallRow, smallCol, smallDim] = size(image_out);
-row1 = position(1); col1 = position(2);
-row2 = row1 + smallRow -1;
-col2 = col1 + smallCol -1;
+new_target1 = im_target(:,:,1);
+new_target2 = im_target(:,:,2);
+new_target3 = im_target(:,:,3);
+firstColumn = inner_idx_shift(:,1);
+for jj = 1:h_s
+    rowElem = inner_idx_shift(firstColumn ==jj, :);
+    new_target1(position(1)+jj-1,position(2)-1+rowElem(:,2))= image_out(jj,rowElem(:,2),1);
+    new_target2(position(1)+jj-1,position(2)-1+rowElem(:,2))= image_out(jj,rowElem(:,2),2);
+    new_target3(position(1)+jj-1,position(2)-1+rowElem(:,2))= image_out(jj,rowElem(:,2),3);
+    
+end
 
-new_target(row1:row2, col1:col2,1) = image_out(:,:,1);
-new_target(row1:row2, col1:col2,2) = image_out(:,:,2);
-new_target(row1:row2, col1:col2,3) = image_out(:,:,3);
+new_target(:,:,1) = new_target1;
+new_target(:,:,2) = new_target2;
+new_target(:,:,3) = new_target3;
+
+%     
+% new_target = im_target;
+% [smallRow, smallCol, smallDim] = size(image_out);
+% row1 = position(1); col1 = position(2);
+% row2 = row1 + smallRow -1;
+% col2 = col1 + smallCol -1;
+% 
+% new_target(row1:row2, col1:col2,1) = image_out(:,:,1);
+% new_target(row1:row2, col1:col2,2) = image_out(:,:,2);
+% new_target(row1:row2, col1:col2,3) = image_out(:,:,3);
 
 figure, imshow(new_target)
 imwrite(image_out,'blended.png')
