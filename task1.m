@@ -8,6 +8,6 @@ figure, imshow(out_image)
 
 %Checking influence of cs, cu
 for cs =[1,2,3,5,7,10,20,50]
-    out_image=sharpening('nirmal.jpg','out5.png',cs,0.5);
+    out_image=sharpening('blurryImage.png','out5.png',cs,0.5);
     figure, imshow(out_image)
 end

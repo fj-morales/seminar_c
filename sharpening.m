@@ -4,7 +4,7 @@ image=imread(input_img_filename);
 Ubar = double(reshape(image,w*h,d))/255;
 
 %% Write your method here
-G = gradient(h,w);
+G = gradient(image);
 g = (G * Ubar);
 I = speye(size(G,2)); % Sparse identity matrix
 U =(G'*G +cu*I)\(cs*G'*g + cu*Ubar);
