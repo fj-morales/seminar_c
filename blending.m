@@ -63,7 +63,7 @@ position = round(h_im.getPosition);
 position = fliplr(position);
 
 % Creation of Ub vector from boundary pixels from target image
-target_bidx = position + b_idx_shift;
+target_bidx = position + b_idx_shift - 1;
 idx = sub2ind(size(im_target), target_bidx(:,1), target_bidx(:,2));
 target2 = im_target(:,:,2);
 target3 = im_target(:,:,3);
