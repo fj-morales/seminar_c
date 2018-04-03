@@ -57,7 +57,7 @@ g(g_zeros == 1) = 0;
 warning('off', 'Images:initSize:adjustingMag');
 figure
 imshow(im_target)  
-title('Please click the point where the blended image will be inserted')
+title('Click on a point to insert the blended image')
 h_im = impoint;
 position = round(h_im.getPosition);
 position = fliplr(position);
