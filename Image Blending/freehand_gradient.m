@@ -3,11 +3,11 @@
 sel_area = double(sel_area);
 if (sum(sum(and(sel_area ~=0,sel_area ~=1))) > 1) % check if area is image or selection
     sel_area_red = logical(sel_area); % it's an image, not binary selection
-    'image'
+    %'image'
 else
     sel_area_red = sel_area(any(sel_area(:,1:end),2),:); % remove zero rows
     sel_area_red = sel_area_red(:,any(sel_area_red(:,1:end),1)); % remove zero rows
-    'not image, selection!'
+    %'not image, selection!'
 end
 % %%
 h_sel = size(sel_area_red,1);

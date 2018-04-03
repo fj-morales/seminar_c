@@ -1,4 +1,4 @@
-function [] = blending (source_image_filename, target_image_filename, output_image_filename)
+function [] = blending (source_image_filename, target_image_filename, output_image_filename,rect)
 im_source=imread(source_image_filename);
 im_target = imread(target_image_filename);
 [h w d]=size(im_source);
@@ -7,10 +7,17 @@ U = double(reshape(im_source,w*h,d))/255;
 
 %%
 im_source =uint8(reshape(U,h,w,d)*255);
+messSource = figure('units','pixels','position',[500 500 150 50],'windowstyle','modal');
+uicontrol('style','text','string','Please select region in source image','units','pixels','position',[25 10 100 30]);
+pause(1);
+delete(messSource);
 figure, imshow(im_source)
-h_im = imfreehand;
+if (rect == true)
+    h_im = imrect;
+else
+    h_im = imfreehand;
+end
 % h_im = impoly;
-% h_im = imrect;
 
 sel_area = round(h_im.createMask); % selected area
 b_idx = cell2mat(bwboundaries(sel_area));
@@ -52,7 +59,10 @@ g = G * Uinner;
 g(find(g_zeros == 1)) = 0;
 
 %%
-
+messTarget = figure('units','pixels','position',[500 500 200 50],'windowstyle','modal');
+uicontrol('style','text','string','Please select upper left corner to place source image','units','pixels','position',[25 10 150 30]);
+pause(1.25);
+delete(messTarget);
 figure, imshow(im_target)       
 h_im = impoint;
 % waitforbuttonpress
