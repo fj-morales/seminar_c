@@ -1,6 +1,6 @@
-clear all; clc;
-im_source=imread('whale.JPG');
-im_target = imread('back.jpg');
+function [] = blending (source_image_filename, target_image_filename, output_image_filename)
+im_source=imread(source_image_filename);
+im_target = imread(target_image_filename);
 [h w d]=size(im_source);
 U = double(reshape(im_source,w*h,d))/255;
 
@@ -101,4 +101,4 @@ new_target(:,:,3) = new_target3;
 % new_target(row1:row2, col1:col2,3) = image_out(:,:,3);
 
 figure, imshow(new_target)
-imwrite(new_target,'blended.png')
+imwrite(new_target,output_image_filename)
