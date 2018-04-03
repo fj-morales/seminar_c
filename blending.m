@@ -35,7 +35,7 @@ close;
 
 % Gradient matrix for inner and boundary pixels construnction
 disp('Computing gradient, please wait...')
-[G,g_zeros ]= freehand_gradient(sel_area);
+[G,g_zeros ]= gradient(sel_area);
 disp('Gradient computation finished!')
 
 % Uinner vector creation from selected area
