@@ -95,25 +95,30 @@ else
     G_v = [];
     G_i = [];
     G_j = [];
-    g_zeros = [];
     h=waitbar(0,'Computing gradient, please wait...');
     loopend=max(sel_ind(:,1))+max(sel_ind(:,2));
     waitbar_counter = 0;
+    g_zeros = [];
     % Compute horizontal gradients
     for i=1:max(sel_ind(:,1))
-        g_zeros = zeros();
+        
         j_ind = sel_ind(sel_ind(:,1)==i, 2); % Returns all the j colums for ith-row
 
         for j=min(j_ind):max(j_ind)
-             if(ismember(j+1,j_ind)) % is required neighbor part of the line vector?
+             if(ismember(j+1,j_ind)) % is required neighbor part of the horizontal line vector?
 
-                G_j = [G_j;i+(j-1)*h_sel;i+j*h_sel];
-                G_v = [G_v; -1; 1];
-                if (ismember([i j], sel_ind_bound, 'rows') || ismember([i j+1], sel_ind_bound, 'rows')) % is the current pixel or its neighbor part of the boundary?
-                    g_zeros = [g_zeros; 1];
+                if(ismember([i j], sel_ind_bound, 'rows') && ismember([i j+1], sel_ind_bound, 'rows')) % is the current pixel or its neighbor part of the boundary?
+                    % If both boundary pixels, do nothing
                 else
-                   g_zeros = [g_zeros; 0]; 
+                    G_j = [G_j;i+(j-1)*h_sel;i+j*h_sel];
+                    G_v = [G_v; -1; 1];
+                    if(ismember([i j], sel_ind_bound, 'rows') || ismember([i j+1], sel_ind_bound, 'rows')) % is the current pixel or its neighbor part of the boundary?
+                       g_zeros = [g_zeros; 1];
+                    else
+                       g_zeros = [g_zeros; 0]; 
+                    end
                 end
+
              end
         end
         waitbar_counter = waitbar_counter + 1;
@@ -122,17 +127,21 @@ else
     % Compute vertical gradients
     for j=1:max(sel_ind(:,2))
         i_ind = sel_ind(sel_ind(:,2)==j, 1); %
-
         for i=min(i_ind):max(i_ind)
-            if(ismember(i+1,i_ind))
+            if(ismember(i+1,i_ind)) % is required neighbor part of the vertical line vector?
 
-                G_j = [G_j;i+(j-1)*h_sel;i+(j-1)*h_sel+1];
-                G_v = [G_v; 1; -1];
-                if (ismember([i j], sel_ind_bound, 'rows') || ismember([i+1 j], sel_ind_bound, 'rows')) % is the current pixel or its neighbor part of the boundary?
-                    g_zeros = [g_zeros; 1];
+                if (ismember([i j], sel_ind_bound, 'rows') && ismember([i+1 j], sel_ind_bound, 'rows'))
+                    % If both boundary pixels, do nothing
                 else
-                    g_zeros = [g_zeros; 0]; 
+                    G_j = [G_j;i+(j-1)*h_sel;i+(j-1)*h_sel+1];
+                    G_v = [G_v; 1; -1];
+                    if (ismember([i j], sel_ind_bound, 'rows') || ismember([i+1 j], sel_ind_bound, 'rows')) % is the current pixel or its neighbor part of the boundary?
+                        g_zeros = [g_zeros; 1];
+                    else
+                        g_zeros = [g_zeros; 0]; 
+                    end 
                 end
+
             end
         end
         waitbar_counter = waitbar_counter + 1;

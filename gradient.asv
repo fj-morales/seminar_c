@@ -15,8 +15,12 @@ else
     % It's selection, then remove zero rows and columns
     sel_area_red = selection(any(selection(:,1:end),2),:); % remove zero rows
     sel_area_red = sel_area_red(:,any(sel_area_red(:,1:end),1)); % remove zero rows
-    ifismember(0,sel_area_red)
-    isImage = false;
+    sel_ind_bound = cell2mat(bwboundaries(selection)); %boundary idx in 2d format
+    if(ismember(0,sel_area_red)) % check if selection is rectangular or irregular
+        isRectangle = false;
+    else
+        isRectangle = true;
+    end
 end
 sel_ind=[];
 [sel_ind(:,1), sel_ind(:,2)]= find(sel_area_red == 1);
@@ -64,24 +68,44 @@ if (isRectangle)
     % collect triplets here
     G = sparse(G_i,G_j,G_v);
 
+    g_zeros = zeros((w_sel-1)*h_sel + (h_sel-1)*w_sel,1);
+    gs1 = (w_sel-1)*h_sel;
+    gs2 = (h_sel-1)*w_sel;
+    g_zeros(1:w_sel-1,:) = 1;
+    g_zeros(gs1-w_sel+1:gs1,:)=1;
+    g_zeros(gs2:gs2+h_sel-1,:)=1;
+    g_zeros(gs1+gs2-h_sel+1:gs1+gs2,:)=1;
+
+    for k=w_sel-1:w_sel-1:gs1
+        g_zeros(k+1,:) = 1;
+        g_zeros(k,:) = 1;
+    end
+    g_zeros(gs1+1,:) = 1;
+    for k=gs1-1+h_sel:h_sel-1:gs2+gs1
+        g_zeros(k,:) = 1;
+        if(k+1<=gs2+gs1)
+            g_zeros(k+1,:) = 1;
+        end
+    end
+    
 %% G computation for irregular selection
 else
-    sel_ind_bound = cell2mat(bwboundaries(selection)); %boundary idx in 2d format
+
     % %%
     G_v = [];
     G_i = [];
     G_j = [];
-    g_zeros = [];
     h=waitbar(0,'Computing gradient, please wait...');
     loopend=max(sel_ind(:,1))+max(sel_ind(:,2));
     waitbar_counter = 0;
+    g_zeros = [];
     % Compute horizontal gradients
     for i=1:max(sel_ind(:,1))
+        
         j_ind = sel_ind(sel_ind(:,1)==i, 2); % Returns all the j colums for ith-row
 
         for j=min(j_ind):max(j_ind)
-             if(ismember(j+1,j_ind)) % is required neighbor part of the line vector?
-
+             if(ismember(j+1,j_ind)) % is required neighbor part of the horizontal line vector?
                 G_j = [G_j;i+(j-1)*h_sel;i+j*h_sel];
                 G_v = [G_v; -1; 1];
                 if (ismember([i j], sel_ind_bound, 'rows') || ismember([i j+1], sel_ind_bound, 'rows')) % is the current pixel or its neighbor part of the boundary?
@@ -97,16 +121,16 @@ else
     % Compute vertical gradients
     for j=1:max(sel_ind(:,2))
         i_ind = sel_ind(sel_ind(:,2)==j, 1); %
-
         for i=min(i_ind):max(i_ind)
-            if(ismember(i+1,i_ind))
-
+            if(ismember(i+1,i_ind)) % is required neighbor part of the vertical line vector?
                 G_j = [G_j;i+(j-1)*h_sel;i+(j-1)*h_sel+1];
                 G_v = [G_v; 1; -1];
+                if (ismember([i j], sel_ind_bound, 'rows') && ismember([i+1 j], sel_ind_bound, 'rows'))
+                end
                 if (ismember([i j], sel_ind_bound, 'rows') || ismember([i+1 j], sel_ind_bound, 'rows')) % is the current pixel or its neighbor part of the boundary?
                     g_zeros = [g_zeros; 1];
                 else
-                   g_zeros = [g_zeros; 0]; 
+                    g_zeros = [g_zeros; 0]; 
                 end
             end
         end
