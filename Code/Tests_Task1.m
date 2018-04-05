@@ -36,11 +36,11 @@ assertEqual(testCase,gCode,gManual);
 
 %Test that for cs=1, the output image is the same as the output:
 %Original image in vector representation
-image=imread('blurryImage.png');
+image=imread('images/blurryImage.png');
 [h w d]=size(image);
 Ubar = double(reshape(image,w*h,d))/255;
 %output image
-out_image = sharpening('blurryImage.png','noscal.png',1,0.5);
+out_image = sharpening('images/blurryImage.png','images/noscal.png',1,0.5);
 Unoscal = double(reshape(out_image,w*h,d))/255;
 
 %Check that output image is equal to the input image

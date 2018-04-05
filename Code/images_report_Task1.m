@@ -1,5 +1,5 @@
 % Using implementation to sharpen provided image
-input_image = 'Images Report/blurryImage.png';
+input_image = 'images/blurryImage.png';
 out_image=sharpening(input_image,'out.png',3,0.5);
 figure, imshow(out_image)
 
