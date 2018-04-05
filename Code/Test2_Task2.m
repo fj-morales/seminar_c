@@ -1,3 +1,6 @@
+%% Test to check if the correct pixels for Ub are selected in the target image which corresponds to the boundary pixels of the selected area in the source image
+
+
 clear all;
 clc;
 % Loading image data
