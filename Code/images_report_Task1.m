@@ -1,10 +1,10 @@
 % Using implementation to sharpen provided image
 input_image = 'images/blurryImage.png';
-out_image=sharpening(input_image,'out.png',3,0.5);
+out_image=sharpening(input_image,'images/out.png',3,0.5);
 figure, imshow(out_image)
 
 %with higher cs
-out_image=sharpening(input_image,'out10.png',10,0.5);
+out_image=sharpening(input_image,'images/out10.png',10,0.5);
 figure, imshow(out_image)
 
 %Checking influence of cs, cu
