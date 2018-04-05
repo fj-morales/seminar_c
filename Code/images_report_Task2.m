@@ -3,7 +3,7 @@
 blending('images/source.jpg','images/target.jpg','images/output_freehand.png',1,false)
 
 %bear next to women in a pool - example 2
-blending('images/source.jpg','images/target.jpg','output_rect.png',1,true)
+blending('images/source.jpg','images/target.jpg','images/output_rect.png',1,true)
 
 %test localization destination image
 blending('images/source.jpg','images/grid.PNG','images/output_testLocalDestination.png',1,false)
