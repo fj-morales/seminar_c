@@ -34,7 +34,7 @@ if (isRectangle)
     G_h = h_sel*(w_sel-1)+(h_sel-1)*w_sel; % G height
     G_i = repmat([1:G_h],2,1);
     G_i= G_i(:);
-    G_v = [repmat([-1 1], 1, h_sel*(w_sel-1)) repmat([1 -1], 1, (h_sel-1)*w_sel)]';
+    G_v = 0.5*[repmat([-1 1], 1, h_sel*(w_sel-1)) repmat([1 -1], 1, (h_sel-1)*w_sel)]';
     G_j = [];
    % Compute horizontal gradients
     if (w_sel>1)
