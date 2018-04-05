@@ -1,4 +1,14 @@
 function [] = blending (source_image_filename, target_image_filename, output_image_filename,a,rect)
+%Blending 
+%   This function takes the source and target images and blends them using
+%   Gradient -Based Image blending
+%   Input: filenames of source, target and output images. argument a refers
+%   to positive weight used to find solution image. argument rect is a
+%   boolean indicating whether shape of the source image is rectangular
+%   (true) or free hand (false)
+%   Output: no output per se, output image is saved in
+%   output_image_filename
+
 % Loading image data
 im_source=imread(source_image_filename);
 im_target = imread(target_image_filename);
@@ -33,7 +43,7 @@ Ub_idx = sub2ind([h_s w_s], b_idx_shift(:,1), b_idx_shift(:,2));
 St = sparse(Ub_idx(1:length(Ub_idx)),[1:length(Ub_idx)],ones(length(Ub_idx),1),h_s*w_s,length(Ub_idx));
 close;
 
-% Gradient matrix for inner and boundary pixels construnction
+% Gradient matrix for inner and boundary pixels construction
 disp('Computing gradient, please wait...')
 [G,g_zeros ]= gradient(sel_area);
 disp('Gradient computation finished!')
@@ -96,4 +106,6 @@ warning('off', 'Images:initSize:adjustingMag');
 figure
 imshow(new_target)
 title('Blended image')
+
+%Saving blended image in desired file
 imwrite(new_target,output_image_filename)
