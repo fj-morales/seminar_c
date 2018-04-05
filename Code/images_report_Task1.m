@@ -1,5 +1,5 @@
 % Using implementation to sharpen provided image
-input_image = 'Image Sharpening/blurryImage.png';
+input_image = 'Images Report/blurryImage.png';
 out_image=sharpening(input_image,'out.png',3,0.5);
 figure, imshow(out_image)
 
@@ -8,7 +8,7 @@ out_image=sharpening(input_image,'out10.png',10,0.5);
 figure, imshow(out_image)
 
 %Checking influence of cs, cu
-for cs =[1,2,3,5,7,10,20,50]
-    out_image=sharpening(input_image,'out5.png',cs,0.5);
-    figure, imshow(out_image)
-end
+%for cs =[1,2,3,5,7,10,20,50]
+%    out_image=sharpening(input_image,'out5.png',cs,0.5);
+%    figure, imshow(out_image)
+%end
