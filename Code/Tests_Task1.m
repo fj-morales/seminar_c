@@ -5,9 +5,9 @@ w = 3;
 %Producing a fake image with symbols: ai where i is the pixel identifier
 fakeImage = sym('a',[1 h*w]);
 fakeImage = reshape(fakeImage,h,w);
-
+fakeSelection = ones(h,w);
 %Computing Gradient Matrix
-grad_m = gradient(h,w);
+grad_m = gradient(fakeSelection);
 
 %Inspecting how gradient matrix 
 %G is mapping pixel values to gradient
@@ -18,7 +18,7 @@ gvec= grad_m * fakeImage(:)
 mockMatrix = [2 1 3 2;1 4 2 3; 3 5 1 4];
 mockMatrix1 = [2 3 3 2;1 5 1 3; 3 2 1 4];
 [h,w] = size(mockMatrix);
-G= gradient(h,w);
+G= gradient(mockMatrix);
 ubar = double(reshape(mockMatrix,w*h,1));
 ubar1 = double(reshape(mockMatrix1,w*h,1));
 ubar = [ubar ubar1 ubar];
